@@ -1,0 +1,6 @@
+services:
+  sqld:
+    image: ghcr.io/libsql/sqld:latest
+    container_name: inmijobs_libsql
+    ports:
+      - "8787:8080"
