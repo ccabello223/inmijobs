@@ -3,7 +3,7 @@ import { Link } from '@tanstack/react-router'
 
 export const Header = () => {
     return (
-        <nav className="flex items-center justify-between px-8 bg-white border-3 border-gray-500 shadow-sm">
+        <nav className="flex items-center justify-between px-8 bg-white border-b-2 border-gray-500 shadow-sm">
 
             {/* SECCIÓN IZQUIERDA: Logo y Buscador */}
             <div className="flex items-center gap-2 py-4">
@@ -24,8 +24,8 @@ export const Header = () => {
             {/* SECCIÓN CENTRAL: Navegación */}
             <div className="hidden md:flex items-center gap-4 rounded-full self-end">
                 <Link
-                    to="/comunidad"
-                    className="px-8 flex items-center h-full text-gray-600 font-medium hover:bg-blue-100 transition-colors relative border-b-[3px] border-transparent"
+                    to="/home"
+                    className="py-2 px-8 flex items-center h-full text-gray-600 font-medium hover:bg-blue-100 transition-colors relative border-b-[3px] border-transparent"
                     activeProps={{
                         className: "!border-blue-600"
                     }}
@@ -34,8 +34,8 @@ export const Header = () => {
                 </Link>
 
                 <Link
-                    to="/empleos"
-                    className="px-8 flex items-center h-full text-gray-600 font-medium hover:bg-blue-100 transition-colors relative border-b-[3px] border-transparent"
+                    to="/ping"
+                    className="py-2 px-8 flex items-center h-full text-gray-600 font-medium hover:bg-blue-100 transition-colors relative border-b-[3px] border-transparent"
                     activeProps={{
                         className: "!border-blue-600"
                     }}

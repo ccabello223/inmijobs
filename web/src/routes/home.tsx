@@ -1,4 +1,7 @@
+import { Aside1 } from '@/components/home/aside1'
+import { Aside2 } from '@/components/home/aside2'
 import { Header } from '@/components/home/header'
+import { Main } from '@/components/home/main'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/home')({
@@ -7,16 +10,16 @@ export const Route = createFileRoute('/home')({
 
 function RouteComponent() {
   return (
-    <main className="min-h-screen text-white bg-zinc-500">
+    <main className="min-h-screen text-white">
 
         <Header/>
 
-      <div className=" w-full grid grid-cols-2 md:grid-cols-[1fr_3fr_1fr] gap-4">
-        <aside className="bg-blue-900 ">ASIDE</aside>
+      <div className=" w-full grid grid-cols-2 md:grid-cols-[0.5fr_2fr_0.5fr] gap-4">
+        <Aside1/>
 
-        <section className="bg-green-900">SECTION</section>
+        <Main/>
 
-        <aside className="bg-yellow-900">ASIDE</aside>
+        <Aside2/>
       </div>
     </main>
   )
