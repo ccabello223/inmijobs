@@ -2,7 +2,7 @@ import { Search, MoreHorizontal, ChevronDown, Bell, Plus, Briefcase } from 'luci
 
 export const Aside2 = () => {
   return (
-    <aside className="w-80 hidden lg:flex flex-col gap-6 pl-2 h-screen sticky top-0 bg-white border-l border-gray-100">
+    <aside className="w-80 hidden lg:flex flex-col gap-6 pl-2 h-screen sticky top-0 bg-white">
 
       {/* SECCIÓN: Contactos */}
       <section className="flex flex-col gap-1 bg-gray-100 p-4">
