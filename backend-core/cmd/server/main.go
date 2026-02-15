@@ -26,17 +26,23 @@ func main() {
 		log.Fatalf("Fatal Error connecting to database: %v", err)
 	}
 
+	// Repositorios
 	authRepository := repository.NewAuthRepository(*db)
 	profileRepository := repository.NewProfileRepository(*db)
 	jobRepository := repository.NewJobRepository(*db)
+	connRepository := repository.NewConnectionRepository(db)
 
+	// Servicios
 	authService := core.NewAuthService(*authRepository)
 	profileService := core.NewProfileService(*profileRepository)
 	jobService := core.NewJobService(*jobRepository)
 
+	// Handlers
 	pingHandler := api.NewPingHandler(*authService)
 	profileHandler := api.NewProfileHandler(*profileService, *authService)
 	jobHandler := api.NewJobHandler(*jobService, *authService)
+	connHandler := api.NewConnectionHandler(connRepository)
+	
 
 	r := chi.NewRouter()
 	r.Use(middleware.Recoverer)
@@ -65,6 +71,14 @@ func main() {
 			r.Put("/{id}", jobHandler.UpdateCompany)
 		})
 	})
+        
+    r.Route("/connections", func(r chi.Router) {
+        r.Get("/test", connHandler.Ping)         
+        r.Post("/", connHandler.CreateConnection)      
+        r.Put("/{id}", connHandler.UpdateConnection)   
+        r.Delete("/{id}", connHandler.DeleteConnection)
+        })
+    })
 
 	port := fmt.Sprintf(":%s", os.Getenv("PORT"))
 	log.Printf("Server starting on port %s", port)
