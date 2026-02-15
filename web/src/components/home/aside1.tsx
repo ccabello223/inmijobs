@@ -1,3 +1,5 @@
+import type { UserModel } from '@/models/UserModel'
+import { getUserData } from '@/services/api/user/getUserData'
 import { Link } from '@tanstack/react-router'
 import {
     Newspaper,
@@ -7,8 +9,23 @@ import {
     Image as ImageIcon,
     Settings
 } from 'lucide-react'
+import { useEffect, useState } from 'react'
 
 export const Aside1 = () => {
+    const [userData, setUserData] = useState<UserModel>()
+    
+    useEffect(() => {
+        const fetchUserData = async () => {
+            try {
+                const data = await getUserData("1")
+                setUserData(data ?? undefined)
+            } catch (error) {
+                console.error('Error fetching user data:', error)
+            }
+        }
+        fetchUserData()
+    }, [])
+
     const menuItems = [
         { label: 'News Feed', icon: Newspaper, to: '/home', badge: 3 },
         { label: 'Messages', icon: MessageSquare, to: '/messages', badge: 6 },
@@ -19,7 +36,7 @@ export const Aside1 = () => {
     ]
 
     return (
-        <aside className="w-64 flex flex-col gap-4 p-4 h-screen sticky top-0">
+        <aside className="w-full flex flex-col gap-4 p-4 h-screen sticky top-0">
             {/* Perfil (Basado en tu imagen) */}
             <div className="flex flex-col items-center mb-6">
                 <div className="relative w-[140px] mb-4">
@@ -29,7 +46,7 @@ export const Aside1 = () => {
                     </div>
                     <div className="w-fit ml-auto relative">
                         <img
-                            src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop"
+                            src={userData?.Image}
                             className="w-20 h-20 rounded-full border-4 border-purple-200"
                             alt="Profile"
                         />
@@ -38,7 +55,8 @@ export const Aside1 = () => {
                     </div>
 
                 </div>
-                <h2 className="font-bold mt-2 text-gray-800">Bogdan Nikitin</h2>
+                <h2 className="font-bold mt-2 text-gray-800">{userData?.Name}</h2>
+                {/* aqui deberia ir el username del perfil */}
                 <p className="text-sm text-gray-400">@nikitinteam</p>
             </div>
 

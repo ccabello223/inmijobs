@@ -1,4 +1,10 @@
-export const Stories = () => {
+import type { UserModel } from "@/models/UserModel"
+
+interface Props {
+    userData?: UserModel
+}
+
+export const Stories = ({ userData }: Props) => {
     return (
         <section className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
             <section className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
@@ -6,7 +12,7 @@ export const Stories = () => {
 
                     <div className="h-[75%] w-full overflow-hidden">
                         <img
-                            src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=600&fit=crop  "
+                            src={userData?.Image}
                             className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
                             alt="Tu perfil"
                         />

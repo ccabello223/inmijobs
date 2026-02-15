@@ -1,7 +1,24 @@
 import { Bell, Grid, MessageCircle, Search, ChevronDown } from 'lucide-react'
 import { Link } from '@tanstack/react-router'
+import { useEffect, useState } from 'react'
+import type { UserModel } from '@/models/UserModel'
+import { getUserData } from '@/services/api/user/getUserData'
 
 export const Header = () => {
+    const [userData, setUserData] = useState<UserModel>()
+
+    useEffect(() => {
+        const fetchUserData = async () => {
+            try {
+                const data = await getUserData("1")
+                setUserData(data ?? undefined)
+            } catch (error) {
+                console.error('Error fetching user data:', error)
+            }
+        }
+        fetchUserData()
+    }, [])
+
     return (
         <nav className="flex items-center justify-between px-8 bg-white border-b-2 border-gray-500 shadow-sm">
 
@@ -46,17 +63,14 @@ export const Header = () => {
 
             {/* SECCIÓN DERECHA: Iconos de Acción y Perfil */}
             <div className="flex items-center gap-3 py-4">
-                {/* Menu Grid Icon */}
                 <button className="p-2 bg-gray-100 text-black active:text-blue-600 rounded-full hover:bg-blue-100 transition-colors">
                     <Grid size={20} />
                 </button>
 
-                {/* Messenger Icon */}
                 <button className="p-2 bg-gray-100 text-black rounded-full hover:bg-blue-100 transition-colors">
                     <MessageCircle size={20} />
                 </button>
 
-                {/* Notifications Icon with Badge */}
                 <div className="relative">
                     <button className="p-2 bg-gray-100 text-black rounded-full hover:bg-blue-100 transition-colors">
                         <Bell size={20} />
@@ -70,7 +84,7 @@ export const Header = () => {
                 <div className="relative cursor-pointer group">
                     <div className="w-10 h-10 rounded-full border border-gray-200 overflow-hidden">
                         <img
-                            src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop"
+                            src={userData?.Image}
                             alt="Profile"
                             className="w-full h-full object-cover"
                         />
