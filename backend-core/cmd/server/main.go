@@ -24,15 +24,17 @@ func main() {
 		log.Fatalf("Fatal Error connecting to database: %v", err)
 	}
 
-	// Repositorios
 	authRepository := repository.NewAuthRepository(*db)
+	profileRepository := repository.NewProfileRepository(*db)
 	connRepository := repository.NewConnectionRepository(db)
 
-	// Servicios
-	authService := core.NewAuthService(*authRepository)
 
-	// Handlers
+	authService := core.NewAuthService(*authRepository)
+	profileService := core.NewProfileService(*profileRepository)
+
+
 	pingHandler := api.NewPingHandler(*authService)
+	profileHandler := api.NewProfileHandler(*profileService, *authService)
 	connHandler := api.NewConnectionHandler(connRepository)
 	
 
@@ -44,14 +46,15 @@ func main() {
 	r.Use(httprate.LimitByIP(100, time.Minute))
 
 	r.Route("/api", func(r chi.Router) {
-        r.Get("/ping", pingHandler.Ping)
+		r.Get("/ping", pingHandler.Ping)
+		r.Put("/profiles/me", profileHandler.UpdateProfile)
+	})
         
-        // Rutas de Conexiones (Amigos)
-        r.Route("/connections", func(r chi.Router) {
-            r.Get("/test", connHandler.Ping)          // Verificar que el handler responde
-            r.Post("/", connHandler.CreateConnection)      // [POST] Enviar solicitud
-            r.Put("/{id}", connHandler.UpdateConnection)   // [PUT] Aceptar/Rechazar
-            r.Delete("/{id}", connHandler.DeleteConnection)// [DELETE] Eliminar conexión
+    r.Route("/connections", func(r chi.Router) {
+        r.Get("/test", connHandler.Ping)         
+        r.Post("/", connHandler.CreateConnection)      
+        r.Put("/{id}", connHandler.UpdateConnection)   
+        r.Delete("/{id}", connHandler.DeleteConnection)
         })
     })
 

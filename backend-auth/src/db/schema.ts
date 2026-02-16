@@ -71,6 +71,20 @@ export const jwks = sqliteTable("jwks", {
   createdAt: integer("created_at", { mode: "timestamp" }).notNull(),
 });
 
+export const profiles = sqliteTable("profiles", {
+  id: text("id").primaryKey(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  biography: text("biography"),
+  location: text("location"),
+  createdAt: integer("created_at", { mode: "timestamp" })
+    .$defaultFn(() => /* @__PURE__ */ new Date())
+    .notNull(),
+  updatedAt: integer("updated_at", { mode: "timestamp" })
+    .$defaultFn(() => /* @__PURE__ */ new Date())
+});
+
 export const connections = sqliteTable("connections", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   requesterId: text("requester_id")
