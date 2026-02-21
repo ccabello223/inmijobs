@@ -34,6 +34,10 @@ type Connection struct {
     Status      ConnectionStatus `gorm:"type:text;default:'pending'" json:"status"`
     CreatedAt   UnixTime         `gorm:"not null;autoCreateTime" json:"created_at"`
     UpdatedAt   UnixTime         `gorm:"not null;autoUpdateTime" json:"updated_at"`
+	  Sessions  []Session `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
+	  Accounts  []Account `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
+	  Companies []Company `gorm:"foreignKey:UserID"`
+	  Profile   *Profile  `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
 }
 
 type Session struct {
