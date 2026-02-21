@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -29,11 +28,14 @@ func main() {
 	authRepository := repository.NewAuthRepository(*db)
 	profileRepository := repository.NewProfileRepository(*db)
 	jobRepository := repository.NewJobRepository(*db)
+	companyRepository := repository.NewCompanyRepository(*db)
 
+	companyService := core.NewCompanyService(*companyRepository)
 	authService := core.NewAuthService(*authRepository)
 	profileService := core.NewProfileService(*profileRepository)
 	jobService := core.NewJobService(*jobRepository)
 
+	companyHandler := api.NewCompanyHandler(*companyService, *authService)
 	pingHandler := api.NewPingHandler(*authService)
 	profileHandler := api.NewProfileHandler(*profileService, *authService)
 	jobHandler := api.NewJobHandler(*jobService, *authService)
@@ -62,13 +64,21 @@ func main() {
 		})
 
 		r.Route("/companies", func(r chi.Router) {
+			r.Post("/", companyHandler.Create)
+			r.Get("/{id}", companyHandler.GetByID)
 			r.Put("/{id}", jobHandler.UpdateCompany)
 		})
 	})
 
-	port := fmt.Sprintf(":%s", os.Getenv("PORT"))
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+
+	r.Put("/api/profiles/me", profileHandler.UpdateProfile)
+
 	log.Printf("Server starting on port %s", port)
-	if err := http.ListenAndServe(port, r); err != nil {
+	if err := http.ListenAndServe(":"+port, r); err != nil {
 		log.Fatalf("Server failed to start: %v", err)
 	}
 }

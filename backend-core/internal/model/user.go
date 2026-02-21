@@ -9,9 +9,10 @@ type User struct {
 	CreatedAt     UnixTime `gorm:"not null;autoCreateTime"`
 	UpdatedAt     UnixTime `gorm:"not null;autoUpdateTime"`
 
-	Sessions []Session `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
-	Accounts []Account `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
-	Profile  *Profile  `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
+	Sessions  []Session `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
+	Accounts  []Account `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
+	Companies []Company `gorm:"foreignKey:UserID"`
+	Profile   *Profile  `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
 }
 
 type Session struct {
@@ -34,7 +35,7 @@ type Account struct {
 	AccessToken           *string
 	RefreshToken          *string
 	IDToken               *string
-	AccessTokenExpiresAt  *UnixTime `gorm:"type:integer"` // Puntero para soportar NULL
+	AccessTokenExpiresAt  *UnixTime `gorm:"type:integer"`
 	RefreshTokenExpiresAt *UnixTime `gorm:"type:integer"`
 	Scope                 *string
 	Password              *string
